@@ -18,8 +18,9 @@ $(document).ready(function(){
 	var app = new App();
 	Backbone.history.start();
 
-	updateUser(user);
+	$.get("https://tiny-pizza-server.herokuapp.com/collections/josh-profile-model",retrieveUser)
 
+	updateUser(user);
 	user.on("change",updateUser)
 
 	function updateUser(userModel){
@@ -29,6 +30,10 @@ $(document).ready(function(){
 	}
 	$("#user-save").submit(function(e){
 		e.preventDefault();
+		var newName = $("#name").val();
+		var newEmail = $("#inputEmail3").val();
+		var newJob = $("#role").val();
+		var newPassword = $("#inputPassword3").val();
 		if($("#name").val() == ""){
 			alert("Please input a name!")
 		}
@@ -43,11 +48,33 @@ $(document).ready(function(){
 		}
 		else{
 			user.set({
-			name: $("#name").val(),
-			email: $("#inputEmail3").val(),
-			role: $("#role").val(),
-			password: $("#inputPassword3").val()
+			name: newName,
+			email: newEmail,
+			role: newJob,
+			password: newPassword
 			});
-		}	
+			$.post("https://tiny-pizza-server.herokuapp.com/collections/josh-profile-model",
+				{
+					name: user.get("name"),
+					role: user.get("role"),
+					email: user.get("email"),
+					password: user.get("password")
+				},
+				alert("Your info has been saved!"),
+				app.navigate("", {trigger: true})
+			);
+		}
+		$("#name").val("");
+		$("#inputEmail3").val();
+		$("#role").val("");
+		$("#inputPassword3").val("");
 	});
+	function retrieveUser(UserInfo){
+		user.set({
+			name: UserInfo[0].name,
+			email: UserInfo[0].email,
+			role: UserInfo[0].role,
+			password: UserInfo[0].password
+			});
+	}
 });
