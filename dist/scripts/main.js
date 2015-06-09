@@ -1,5 +1,5 @@
-var user = new UserModel();
 $(document).ready(function(){
+	var user = new UserModel();
 	var App = Backbone.Router.extend({
 		routes: {
 			'': 'profile',
@@ -12,18 +12,22 @@ $(document).ready(function(){
 		edit: function() {
 			$('.page').hide();
 			$('#edit').show();
+			$("#name").val(user.get("name"));
+			$("#inputEmail3").val(user.get("email"));
+			$("#role").val(user.get("role"));
 		}
 	});
 	var app = new App();
 	Backbone.history.start();
 
-	// $.get("https://tiny-pizza-server.herokuapp.com/collections/josh-profile-model",retrieveUser)
+	$.get("https://tiny-pizza-server.herokuapp.com/collections/josh-profile-model",retrieveUser)
 
 	updateUser(user);
 	user.on("change",updateUser)
 
 	function updateUser(userModel){
 		$("#nameShow").html(user.get("name"));
+		$(".name").html(user.get("name"));
 		$("#jobShow").html(user.get("role"));
 		$("#emailShow").html(user.get("email"));
 	}
@@ -63,10 +67,6 @@ $(document).ready(function(){
 				app.navigate("", {trigger: true})
 			);
 		}
-		$("#name").val("");
-		$("#inputEmail3").val();
-		$("#role").val("");
-		$("#inputPassword3").val("");
 	});
 	function retrieveUser(UserInfo){
 		user.set({
