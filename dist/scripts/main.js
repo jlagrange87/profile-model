@@ -1,6 +1,5 @@
 var user = new UserModel();
 $(document).ready(function(){
-	// var user = new UserModel();
 	var App = Backbone.Router.extend({
 		routes: {
 			'': 'profile',
@@ -18,7 +17,7 @@ $(document).ready(function(){
 	var app = new App();
 	Backbone.history.start();
 
-	$.get("https://tiny-pizza-server.herokuapp.com/collections/josh-profile-model",retrieveUser)
+	// $.get("https://tiny-pizza-server.herokuapp.com/collections/josh-profile-model",retrieveUser)
 
 	updateUser(user);
 	user.on("change",updateUser)
